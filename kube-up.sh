@@ -24,5 +24,5 @@ if [ $(command -v docker-machine) ] &&  [ ! -z "$(docker-machine active)" ]; the
 fi
 
 ./wait-for-kubernetes.sh
-./activate-dns.sh
+#./activate-dns.sh
 ./activate-kube-ui.sh
