@@ -2,7 +2,7 @@
 
 The following will also be set up for you:
 
- * The Kubernetes [DNS addon](https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/dns)
+ * The Kubernetes [DNS addon](https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/dns) __currently deactivated__
  * [Kube UI](http://kubernetes.io/v1.0/docs/user-guide/ui.html)
 
 ## Starting Kubernetes on Linux
