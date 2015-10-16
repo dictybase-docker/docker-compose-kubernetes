@@ -26,3 +26,4 @@ fi
 ./wait-for-kubernetes.sh
 #./activate-dns.sh
 ./activate-kube-ui.sh
+./start-etcd-app.sh
