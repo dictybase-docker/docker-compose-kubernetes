@@ -1,0 +1,39 @@
+{
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "metadata": {
+        "name": "app-etcd",
+        "labels": {
+            "app": "etcdapp"
+        }
+    },
+    "spec": {
+        "restartPolicy": "Never",
+        "containers": [
+            {
+                "image": "gcr.io/google_containers/etcd:2.0.12",
+                "command": [
+                    "/usr/local/bin/etcd",
+                    "-advertise-client-urls",
+                    "http://etcd-client:9251",
+                    "-listen-client-urls",
+                    "http://0.0.0.0:9251"
+                ],
+                "name": "app-etcd",
+                "ports": [
+                    {
+                        "containerPort": 9251,
+                        "hostPort": 9251,
+                        "name": "clientport",
+                        "protocol": "TCP"
+                    }
+                ],
+                "resources": {
+                    "limits": {
+                        "cpu": "200m"
+                    }
+                }
+            }
+        ]
+    }
+}
