@@ -5,7 +5,7 @@ if [ $? != 0 ]; then
     echo "Kubernetes already down?"
 fi
 
-cd kubernetes
+cd cluster
 if [ ! -z "$(docker-compose ps -q)" ]; then
     docker-compose stop
     docker-compose rm -f -v
