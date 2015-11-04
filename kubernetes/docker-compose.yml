@@ -1,9 +1,11 @@
 etcd:
   image: gcr.io/google_containers/etcd:2.0.12
   net: host
+  container_name: kube_etcd
   command: ['/usr/local/bin/etcd', '--data-dir=/var/etcd/data']
 
 master:
+  container_name: kube_master
   image: gcr.io/google_containers/hyperkube:v1.0.6
   net: host
   privileged: true
@@ -12,6 +14,7 @@ master:
   command: ['/hyperkube', 'kubelet', '--containerized', '--hostname-override=127.0.0.1', '--address=0.0.0.0', '--api-servers=http://localhost:8080', '--config=/etc/kubernetes/manifests', '--cluster-dns=10.0.0.10', '--cluster-domain=cluster.local']
 
 proxy:
+  container_name: kube_proxy
   image: gcr.io/google_containers/hyperkube:v1.0.6
   net: host
   privileged: true
