@@ -6,7 +6,7 @@ etcd:
 
 master:
   container_name: kube_master
-  image: gcr.io/google_containers/hyperkube:v1.0.6
+  image: gcr.io/google_containers/hyperkube:v1.1.1
   net: host
   privileged: true
   volumes:
@@ -15,7 +15,7 @@ master:
 
 proxy:
   container_name: kube_proxy
-  image: gcr.io/google_containers/hyperkube:v1.0.6
+  image: gcr.io/google_containers/hyperkube:v1.1.1
   net: host
   privileged: true
   command: ['/hyperkube', 'proxy', '--master=http://127.0.0.1:8080', '--v=2']
