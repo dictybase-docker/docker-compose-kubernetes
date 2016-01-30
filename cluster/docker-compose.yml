@@ -1,16 +1,26 @@
 etcd:
   image: gcr.io/google_containers/etcd:2.0.12 
-  net: "host"
+  net: host
   command: /usr/local/bin/etcd --data-dir=/var/etcd/data
 master:
-  image: gcr.io/google_containers/hyperkube:v1.1.4
-  net: "host"
+  image: gcr.io/google_containers/hyperkube:v1.0.6
+  net: host
+  pid: host
+  privileged: true
   volumes:
     - /mnt/docker:/mnt/docker:rw
-    - /var/run/docker.sock:/var/run/docker.sock
+    #- /:/rootfs:ro
+    #- /dev:/dev
+    - /sys:/sys:rw
+    - /var/lib/kubelet:/var/lib/kubelet:rw
+    - /var/run:/var/run:rw
+      #- /var/run/docker.sock:/var/run/docker.sock
   command: /hyperkube kubelet --api_servers=http://localhost:8080 --v=2 --address=0.0.0.0 --enable_server --hostname_override=127.0.0.1 --config=/etc/kubernetes/manifests
+  #command: ['nsenter', '--target=1', '--mount', '--wd=.', '--', './hyperkube', 'kubelet', '--hostname-override=127.0.0.1', '--address=0.0.0.0', '--api-servers=http://localhost:8080', '--config=etc/kubernetes/manifests']
+  #command: ['/kubelet-runner.sh', '--hostname-override=127.0.0.1', '--address=0.0.0.0', '--api-servers=http://localhost:8080', '--config=etc/kubernetes/manifests']
 proxy:
-  image: gcr.io/google_containers/hyperkube:v1.1.4
-  net: "host"
+  image: gcr.io/google_containers/hyperkube:v1.0.6
+  net: host
+  pid: host
   privileged: true
   command: /hyperkube proxy --master=http://127.0.0.1:8080 --v=2
