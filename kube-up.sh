@@ -15,7 +15,7 @@ if [ $? != 0 ]; then
 fi
 
 cd cluster
-docker-compose up -d
+docker-compose up -d --no-recreate
 
 cd ../scripts
 

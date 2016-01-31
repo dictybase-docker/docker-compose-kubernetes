@@ -7,7 +7,7 @@ fi
 
 cd cluster
 if [ ! -z "$(docker-compose ps -q)" ]; then
-    docker-compose stop
+    docker-compose stop -t 25
     docker-compose rm -f -v
 fi
 
