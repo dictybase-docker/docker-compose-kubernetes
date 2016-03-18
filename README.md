@@ -1,52 +1,36 @@
-# Launch [Kubernetes](http://kubernetes.io) using Docker via [Docker Compose](https://www.docker.com/docker-compose)
+# Launch [Kubernetes](http://kubernetes.io) 
+
+It is started locally using the technique described [here](http://kubernetes.io/docs/getting-started-guides/locally/)
 
 The following will also be set up for you:
 
- * The Kubernetes [DNS addon](https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/dns) __currently deactivated__
- * [Kube UI](http://kubernetes.io/v1.0/docs/user-guide/ui.html)
+ * [Kube UI](http://kubernetes.io/docs/user-guide/ui/)
 
-## Starting Kubernetes on Linux
+## Prereqs
+Download and install [etcd](https://github.com/cores/etcd/releases). Make sure it is available
+in the system path.
 
-On Linux we'll run Kubernetes using a local Docker Engine. You will also need Docker Compose as well as the kubectl tool. To launch the cluster:
+## Managing kubernet cluster
 
-```sh
-./kube-up.sh
-```
+Setup and teardown of cluster are done using a `Makefile`
 
-## Starting Kubernetes on OS X
+### `make kube-up`
 
-On OS X we'll launch Kubernetes inside a [boot2docker](http://boot2docker.io) VM via [Docker Machine](https://docs.docker.com/machine/). You will need to have Docker Machine, Docker Compose, and the kubectl tool installed locally. First start your boot2docker VM:
+* Starts a kubernetes cluster
+* Setup the proper context for kubectl
+* Starts kube-ui
+* Starts and additional [etcd](https://github.com/coreos/etcd) instance.
 
-```sh
-docker-machine start <name>
-eval "$(docker-machine env $(docker-machine active))"
-```
+### `make kube-down`
 
-Then, launch the Kubernetes cluster in boot2docker via Docker Machine:
+* Teardown the cluster
+* Stops all the pod, rc and services.
+* Removes all docker containers
 
-```sh
-./kube-up.sh
-```
+### `make build`
+Builds the kubernetes toolchain.
 
-The script will set up port forwarding so that you can use kubectl locally without having to ssh into boot2docker.
+### `eval $(source path.sh)`
+Setup the path for the kubectl binary.
 
-## Checking if Kubernetes Is Running
-
-```sh
-kubectl cluster-info
-Kubernetes master is running at http://localhost:8080
-KubeUI is running at http://localhost:8080/api/v1/proxy/namespaces/kube-system/services/kube-ui
-```
-
-## Accessing Kube UI
-
-You can access Kube UI at http://localhost:8080/ui.
-
-## To destroy the cluster
-
-```sh
-./kube-down.sh
-```
-
-This will also remove any services, replication controllers and pods that are running in the cluster.
 
