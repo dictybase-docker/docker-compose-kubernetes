@@ -26,7 +26,8 @@ kube-stop:
 	$(BIN)/kubectl delete rc --all --namespace=kube-system
 	$(BIN)/kubectl delete po --all
 	$(BIN)/kubectl delete svc --all
-	$(BIN)/kubectl delete pvc,pv --all
+	$(BIN)/kubectl delete pvc --all
+	$(BIN)/kubectl delete pv --all
 	sudo kill $(shell pgrep -o -f kube-apiserver)
 	sudo kill $(shell pgrep -o -f kube-proxy)
 	sudo kill $(shell pgrep -o -f kube-controller)
