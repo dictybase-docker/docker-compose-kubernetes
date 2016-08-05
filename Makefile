@@ -1,5 +1,5 @@
 CURRDIR = $(shell pwd)
-FOLDER = $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/kubernetes-v1.2.0
+FOLDER = $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/kubernetes-v1.3.3
 BIN = $(FOLDER)/_output/dockerized/bin/linux/amd64
 k8s_containers = $(shell docker ps -a -f "name=k8s_" -q)
 export ENABLE_DAEMON=1
@@ -17,21 +17,25 @@ etcd-pod:
 	$(BIN)/kubectl create -f $(CURRDIR)/etcd/etcd-service.json
 	$(BIN)/kubectl create -f $(CURRDIR)/etcd/etcd-pod.json
 kube-ui:
-	$(BIN)/kubectl create -f $(FOLDER)/cluster/mesos/docker/kube-system-ns.yaml
+	#$(BIN)/kubectl create -f $(FOLDER)/cluster/mesos/docker/kube-system-ns.yaml
 	$(BIN)/kubectl create -f $(FOLDER)/cluster/addons/dashboard/dashboard-controller.yaml --namespace=kube-system
 	$(BIN)/kubectl create -f $(FOLDER)/cluster/addons/dashboard/dashboard-service.yaml --namespace=kube-system
-kube-up: kube-start kubectl-setup kube-ui etcd-pod
+kube-up: kube-start kubectl-setup etcd-pod
 kube-stop:
 	$(BIN)/kubectl delete rc --all
 	$(BIN)/kubectl delete rc --all --namespace=kube-system
+	$(BIN)/kubectl delete po --all  --namespace=kube-system
 	$(BIN)/kubectl delete po --all
+	$(BIN)/kubectl delete svc --all --namespace=kube-system
 	$(BIN)/kubectl delete svc --all
+	$(BIN)/kubectl delete secrets --all
+	$(BIN)/kubectl delete secrets --all --namespace=kube-system
 	$(BIN)/kubectl delete pvc --all
 	$(BIN)/kubectl delete pv --all
-	sudo kill $(shell pgrep -o -f kube-apiserver)
-	sudo kill $(shell pgrep -o -f kube-proxy)
-	sudo kill $(shell pgrep -o -f kube-controller)
-	sudo kill $(shell pgrep -o -f kube-scheduler)
+	sudo kill $(shell pgrep -o -f apiserver)
+	sudo kill $(shell pgrep -o -f proxy)
+	sudo kill $(shell pgrep -o -f controller)
+	sudo kill $(shell pgrep -o -f scheduler)
 	sudo kill $(shell pgrep -o -f kubelet)
 	sudo kill $(shell pgrep -o -f etcd)
 kube-cleanup:
